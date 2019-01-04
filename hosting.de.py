@@ -1,4 +1,15 @@
 #!/usr/bin/env python2
+# -*- coding: utf-8 -*-
+"""
+    modify dns settings for hosting.de with rest api
+    https://github.com/lemo/hosting.de_update.py
+
+"""
+__author__ = "Alexander Goltz"
+__copyright__ = "Copyright 2019"
+__credits__ = ["Alexander Goltz"]
+__license__ = "MIT"
+__status__ = 'Prototype'
 
 import sys
 import string
