@@ -3,5 +3,5 @@ update your dns settings on hosting.de via REST API
 
 https://github.com/lemo/hosting.de_update.py
 
-## cavets
+## caveats
 updating a TXT record requires escaping the data with backslash e.g. \\\"DATA\\\"
