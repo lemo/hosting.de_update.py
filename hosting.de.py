@@ -31,22 +31,22 @@ action_group.add_argument("--add",
                           help='add a new entry')
 action_group.add_argument("--remove",
                           action='store_const', dest='mode', const='remove',
-                          help='remove an existing array')
+                          help='remove an existing entry')
 parser.add_argument("-a", "--authtoken",
                     required=True,
                     help='your authentication token from hosting.de')
 parser.add_argument("-n", "--name",
                     required=True,
-                    help='name to update')
+                    help='name of entry to edit')
 parser.add_argument(
     "-z",
     "--zone",
-    help='dns soa zone aka. root zone, default(last two parts of --name)')
+    help='dns soa zone aka. root zone, optional, default(last two parts of --name)')
 parser.add_argument("-t", "--type",
                     required=True,
                     help='dns type e.g. A,AAAA,MX,...')
 parser.add_argument("-c", "--content",
-                    help='content to set, normally your ip or text')
+                    help='content to set, normally your ip or data (escape TXT with \\"$CONTENT\\" when using selective --remove)')
 parser.add_argument("--ttl",
                     type=int,
                     default=86400,
