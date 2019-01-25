@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
     modify dns settings for hosting.de with rest api
@@ -64,10 +64,40 @@ if args.zone is None:
 if args.verbose:
     print args
 
-payload = {
-    "authToken": args.authtoken
-}
 headers = {'content-type': 'application/json'}
+
+#find zoneConfig
+payload = {
+    "authToken": args.authtoken,
+    "filter": {
+        "field": "ZoneNameUnicode",
+        "value": args.zone
+    },
+
+}
+url = "https://secure.hosting.de/api/dns/v1/json/zoneConfigsFind"
+if args.verbose:
+    print '> ' + url
+    print json.dumps(payload, indent=4)
+answer = requests.post(url, data=json.dumps(payload), headers=headers)
+if args.verbose:
+    print '<'
+    print answer.text
+
+if answer.status_code != requests.codes.ok:
+    answer.raise_for_status()
+    exit_on_error()
+
+zoneConfig = json.loads(answer.text)['response']['data'][0]
+
+#find zoneRecord 
+payload = {
+    "authToken": args.authtoken,
+    "filter": {
+        "field": "ZoneNameUnicode",
+        "value": args.zone
+    },
+}
 
 url = "https://secure.hosting.de/api/dns/v1/json/zonesFind"
 if args.verbose:
@@ -102,11 +132,11 @@ if args.mode == 'update' or args.mode == 'add':
             "ttl": args.ttl
         }
     )
+
+#Change entry
 payload = {
     "authToken": args.authtoken,
-    "zoneConfig": {
-        "name": args.zone
-    },
+    "zoneConfig": zoneConfig,
     "recordsToAdd": newRecords,
     "recordsToDelete": oldRecords
 }
